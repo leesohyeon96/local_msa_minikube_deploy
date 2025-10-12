@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1 # current official API version for ingress
+kind: Ingress
+metadata:
+  # ingress resource name & used for identification when managing with kubectl
+  name: msa-ingress
+  # nginx ingress controller configuration
+  # - rewrites the request URI to '/' when forwarding traffic to the backend
+  # ex. /product -> / (inside of product-service)
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    # get a one external request with one domain(ex. msa.local)
+    # 외부 요청을 하나의 도메인(msa.local)로 받음
+  - host: msa.local
+    http:
+      # request paths
+      paths:
+      # 1. /product
+      #   ex. msa.local/product -> product-service 로 전달
+      - path: /product
+        pathType: Prefix
+        backend:
+          service:
+            name: product-service
+            port:
+              number: 80 # route requests to port 80 of the product-service
+      # 2. /order
+      - path: /order
+        pathType: Prefix
+        backend:
+          service:
+            name: order-service
+            port:
+              number: 80
+      # 3. /payment
+      - path: /payment
+        pathType: Prefix
+        backend:
+          service:
+            name: payment-service
+            port:
+              number: 80

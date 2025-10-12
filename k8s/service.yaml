@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+# the criteria for selecting pods to provide traffic (이 서비스가 트래픽을 전달할 pod 선택 기준)
+spec:
+  selector:
+    app: product
+  ports:
+  - protocol: TCP
+    port: 80 # the port exposed inside of cluster to receive traffic (클러스터 내부에서 트래픽 받기 위해 노출되는 포트)
+    targetPort: 8080 # (the port on pods that receive the forwarded traffic) 트래픽이 전달될 파드 내부 포트
+  type: ClusterIP # only access within the cluster (클러스터 내부에서만 접근가능)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  selector:
+    app: order
+  ports:
+  - protocol: TCP
+    port: 80 # duplicated port is fine because each service is accessed via its unique DNS name (dns:port) within the cluster (서비스dns:port 형태로 동작하기 떄문에 위 product service의 서비스 포트와 겹쳐도 됨)
+    # * A service may have multiple parts (ex. http + gRPC)
+    # + When separating user traffic and monitoring (ex. metrics, actuator)
+    # http && gRPC 프로토콜 둘다 사용할때 / 내부 관리용 포트 필요할때(prometheus 등 모니터링 시스템이 접근하는 메트릭 포트용)
+
+    # A Service may have multiple ports (e.g., HTTP + gRPC),
+    # but usually only one is used (80 → 8080).
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+spec:
+  selector:
+    app: payment
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
