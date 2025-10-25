@@ -1,4 +1,4 @@
-package com.shl.msa_k8s_deploy
+package com.shl.local_msa_minikube_deploy
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

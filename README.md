@@ -5,7 +5,7 @@ A comprehensive MSA template project using Kotlin + Spring Boot + Testcontainers
 ## 🏗️ Project Structure
 
 ```
-msa_k8s_deploy/
+local_msa_minikube_deploy/
 ├── product-service/          # Product Service
 ├── order-service/           # Order Service  
 ├── payment-service/         # Payment Service
@@ -209,7 +209,7 @@ Kotlin + Spring Boot + Testcontainers + Docker + Kubernetes를 활용한 MSA 템
 ## 🏗️ 프로젝트 구조
 
 ```
-msa_k8s_deploy/
+local_msa_minikube_deploy/
 ├── product-service/          # 상품 서비스
 ├── order-service/           # 주문 서비스  
 ├── payment-service/         # 결제 서비스
